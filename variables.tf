@@ -13,7 +13,8 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
-variable "deployer_role_arn" {
-  description = "ARN da role que aplicará o terraform (ex: GitHub Actions)"
+variable "environment" {
+  description = "Ambiente de deploy (ex: dev, prod)"
   type        = string
+  default     = "prod"
 }

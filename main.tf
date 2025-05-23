@@ -1,30 +1,22 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.0"
+  version = "~> 20.31"
 
-  cluster_name    = "lanchonete-eks"
-  cluster_version = "1.29"
-  subnet_ids      = var.private_subnet_ids
-  vpc_id          = var.vpc_id
+  cluster_name    = "lanchonete"
+  cluster_version = "1.31"
 
-  enable_irsa = true
+  cluster_endpoint_public_access = true
 
-  eks_managed_node_groups = {
-    default = {
-      instance_types = ["t3.micro"]
-      min_size       = 1
-      max_size       = 3
-      desired_size   = 1
-    }
+  cluster_compute_config = {
+    enabled    = true
+    node_pools = ["general-purpose"]
   }
 
-  manage_aws_auth_configmap = true
+  vpc_id     = var.vpc_id
+  subnet_ids = var.private_subnet_ids
 
-  aws_auth_roles = [
-    {
-      rolearn  = var.deployer_role_arn
-      username = "admin"
-      groups   = ["system:masters"]
-    }
-  ]
+  tags = {
+    Environment = "prod"
+    Terraform   = "true"
+  }
 }
